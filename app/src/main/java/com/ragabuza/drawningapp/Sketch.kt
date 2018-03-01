@@ -55,7 +55,7 @@ class Sketch<out T>(private val w: Int, private val h: Int, var bitmap: Bitmap, 
                             it.red,
                             it.green,
                             it.blue,
-                            alpha
+                            it.alpha
                     )
             )
             canvas.quad(
@@ -82,7 +82,7 @@ class Sketch<out T>(private val w: Int, private val h: Int, var bitmap: Bitmap, 
         if (niceRects[index].attempt > 0 && attempt != 500) {
             attempt++
             niceRects[index]
-                    .mutate(random(0F, 255F), random(0F, 255F), random(0F, 255F), random(0F, drawW), random(0F, drawH))
+                    .mutate(random(50F, 255F), random(0F, 255F), random(0F, 255F), random(0F, 255F), random(0F, drawW), random(0F, drawH))
         } else {
             attempt = 0
             niceRects[index].attempt = 0
@@ -129,7 +129,7 @@ class Sketch<out T>(private val w: Int, private val h: Int, var bitmap: Bitmap, 
                             it.red,
                             it.green,
                             it.blue,
-                            alpha
+                            it.alpha
                     )
             )
             canvas.quad(
@@ -145,13 +145,12 @@ class Sketch<out T>(private val w: Int, private val h: Int, var bitmap: Bitmap, 
         canvas.text(niceRects.size.toString() + "/$maxPoly", 0F, 64F)
     }
 
-    private val alpha = 255F
-
     fun newNiceRect() {
         niceRects.add(niceRect(
                 random(0F, 255F),
                 random(0F, 255F),
                 random(0F, 255F),
+                random(50F, 255F),
                 random(0F, drawW),
                 random(0F, drawH),
                 random(0F, drawW),
@@ -160,7 +159,7 @@ class Sketch<out T>(private val w: Int, private val h: Int, var bitmap: Bitmap, 
                 random(0F, drawH),
                 random(0F, drawW),
                 random(0F, drawH),
-                20
+                30
         ))
     }
 
@@ -168,6 +167,7 @@ class Sketch<out T>(private val w: Int, private val h: Int, var bitmap: Bitmap, 
             var red: Float,
             var green: Float,
             var blue: Float,
+            var alpha: Float,
             var x1: Float,
             var y1: Float,
             var x2: Float,
@@ -178,14 +178,13 @@ class Sketch<out T>(private val w: Int, private val h: Int, var bitmap: Bitmap, 
             var y4: Float,
             var attempt: Int
     ) {
-        fun mutate(rColor: Float, gColor: Float, bColor: Float, x: Float, y: Float) {
+        fun mutate(aColor: Float, rColor: Float, gColor: Float, bColor: Float, x: Float, y: Float) {
             attempt--
-            when (Random().nextInt(10)) {
-                1, 2, 3 -> {
-                    red = rColor
-                    green = gColor
-                    blue = bColor
-                }
+            when (Random().nextInt(11)) {
+                0 -> red = rColor
+                1 -> green = gColor
+                2 -> blue = bColor
+                3 -> alpha = aColor
                 4 -> x1 = x
                 5 -> y1 = y
                 6 -> x2 = x
